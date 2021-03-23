@@ -20,4 +20,8 @@ class Company extends Model
         'updated_at',
         'deleted_at'
     );
+
+    public function company_employee(){
+        return $this->hasMany('App\Models\Employee','company_id','id');
+    }
 }

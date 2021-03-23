@@ -20,4 +20,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/companylist','CompanyController@getCompanyRecords');
+Route::get('/companylist','CompanyController@getCompanyRecords');

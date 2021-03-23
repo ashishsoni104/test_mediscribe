@@ -1,5 +1,5 @@
-<div class="row">
-    <a role="button" href="#" class="btn btn-primary pull-right">+ Add Company</a>
+<div class="row" style="float:right;margin-right:10px;margin-bottom:25px;">
+    <a role="button" href="#" class="btn btn-primary" >+ Add Company</a>
 </div>
 <table class="table table-bordered" id="company_datatable">
     <thead>

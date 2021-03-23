@@ -21,4 +21,8 @@ class Employee extends Model
         'updated_at',
         'deleted_at'
     );
+
+    public function company_employee(){
+        return $this->belongsTo('App\Models\Company','company_id','id');
+    }
 }
