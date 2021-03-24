@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use App\User;
 use Auth,DataTables,DB;
 
 class CompanyController extends Controller
@@ -35,4 +36,39 @@ class CompanyController extends Controller
         ->rawColumns(['action'])
         ->make(true);    
     }
+
+    /**
+    * Add Company View
+    * @return view
+    */
+    public function addCompany(){
+        return view('company.add_company');
+    }
+
+    /**
+    * Save Company data
+    * @return view
+    */
+    public function saveCompany(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'phone' => 'required',
+            'logo' => 'required',
+        ]);
+
+        //create user for company
+        $password = $request->password;
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($password);
+        $user->save();
+
+        $company = new Company();
+        $company->name = $request->name;
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+    }    
 }

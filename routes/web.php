@@ -21,3 +21,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/companylist','CompanyController@getCompanyRecords');
+Route::get('/add-company','CompanyController@addCompany');
+Route::post('/save-company','CompanyController@saveCompany');
