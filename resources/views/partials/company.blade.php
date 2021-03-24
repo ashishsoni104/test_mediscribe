@@ -28,10 +28,20 @@
                     { data: 'email', name: 'email' },
                     { data: 'phone', name: 'phone' },
                     { data: 'website', name: 'website' },
-                    { data: 'logo', name: 'logo' },
+                    { data: 'logo_url', name: 'logo_url' },
                     { data: 'created_at', name: 'created_at' },
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                  ]
         });
      });
+     $('body').on('cilck','.edit-company',function(){
+         var id = $(this).data("value");
+        window.location.href = '{{ url("/") }}'+"/edit-company/"+id;
+     })
+     $('body').on('cilck','.delete-company',function(){
+        if(confirm("Aru Sure you want to delete this company")){
+            var id = $(this).data("value");
+            window.location.href = '{{ url("/") }}'+"/delete-company/"+id;
+        }
+     })
   </script>
