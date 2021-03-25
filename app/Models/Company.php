@@ -11,6 +11,8 @@ class Company extends Model
     use SoftDeletes;
     protected $table = 'company';
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
+    public $timestamps = false;
     protected $fillable = array(
         'user_id', 
         'name', 

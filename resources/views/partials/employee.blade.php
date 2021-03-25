@@ -1,7 +1,7 @@
 <div class="row" style="float:right;margin-right:10px;margin-bottom:25px;">
     <a role="button" href="{{ url('/add-employee') }}" class="btn btn-primary" >+ Add Employee</a>
 </div>
-<table class="table table-bordered" id="employee_datatable">
+<table class="table table-bordered" id="employee_datatable" width="100%">
     <thead>
         <tr>
             <td>S.No</td>
@@ -25,24 +25,27 @@
            ajax: "{{ url('employeelist') }}",
            columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    { data: 'name', name: 'name' },
+                    { data: 'fullname', name: 'fullname' },
                     { data: 'email', name: 'email' },
                     { data: 'phone', name: 'phone' },
-                    { data: 'website', name: 'website' },
-                    { data: 'logo_url', name: 'logo_url' },
+                    { data: 'profile_photo', name: 'profile_photo' },
+                    { data: 'dob', name: 'dob' },
+                    { data: 'designation', name: 'designation' },
                     { data: 'created_at', name: 'created_at' },
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                  ]
         });
-     });
-     $('body').on('cilck','.edit-employee',function(){
-         var id = $(this).data("value");
-        window.location.href = '{{ url("/") }}'+"/edit-employee/"+id;
-     })
-     $('body').on('cilck','.delete-employee',function(){
-        if(confirm("Are you Sure you want to delete this employee")){
+
+        $('#employee_datatable').DataTable().on('click', '.edit-employee[data-value]', function (e) {
             var id = $(this).data("value");
-            window.location.href = '{{ url("/") }}'+"/delete-employee/"+id;
-        }
-     })
+            window.location.href = '{{ url("/") }}'+"/edit-employee/"+id;
+        });
+        $('#employee_datatable').DataTable().on('click', '.delete-employee[data-value]', function (e) {
+            if(confirm("Are you Sure you want to delete this employee")){
+                var id = $(this).data("value");
+                window.location.href = '{{ url("/") }}'+"/delete-employee/"+id;
+            }
+        });
+     });
+    
   </script>

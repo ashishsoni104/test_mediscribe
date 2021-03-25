@@ -20,7 +20,7 @@ class CreateEmployeeTable extends Migration
             $table->string("email")->unique();
             $table->string("phone");
             $table->string("profile_picture");
-            $table->string("dob");
+            $table->date("dob");
             $table->string("designation");
             $table->softDeletes();
             $table->timestamps();

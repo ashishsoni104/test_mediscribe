@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Roles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +52,8 @@ class User extends Authenticatable
             return $this->roles->contains('name', $role);
         }
         return !! $role->intersect($this->roles)->count();
+    }
+    public function companyUser(){
+        return $this->hasOne('App\Models\Company');
     }
 }

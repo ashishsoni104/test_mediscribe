@@ -11,6 +11,8 @@ class Employee extends Model
     use SoftDeletes;
     protected $table = 'employee';
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
+    public $timestamps = false;
     protected $fillable = array(
         'company_id', 
         'fullname', 

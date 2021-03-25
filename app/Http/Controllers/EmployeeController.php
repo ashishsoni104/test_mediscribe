@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Employee;
+use App\Models\Company;
 use Auth,DataTables,DB,File;
 
 use Illuminate\Http\Request;
@@ -25,19 +26,19 @@ class EmployeeController extends Controller
      */
     public function getEmployeeRecords(Request $request){
         $user_id = Auth::user()->id;
-        $logoUrl = asset('storage/logo/');
-        $employee = Employee::get();
+        $company_id = Company::where('user_id',$user_id)->first()->id;
+        $employee = Employee::where('company_id',$company_id)->get();
         return Datatables::of($employee)
         ->addIndexColumn()
         ->addColumn('action', function($row){
             $btn = '<a href="javascript:void(0)" class="edit-employee btn btn-primary btn-sm" data-value="'.$row->id.'">Edit</a> <a href="javascript:void(0)" class="delete-employee btn btn-danger btn-sm" data-value="'.$row->id.'">Delete</a>';
             return $btn;
         })
-        ->addColumn('profile_picture',function($row){
-            $url = asset('storage/profie_picture/');
-            return '<img src="'.$url.'" border="0" width="40" class="img-rounded" align="center" />';
+        ->addColumn('profile_photo',function($row){
+            $url = asset('storage/profile_picture/').'/'.$row->profile_picture;
+            return '<img src="'.$url.'" border="0" width="100" class="img-rounded" align="center" />';
         })
-        ->rawColumns(['action','profile_picture'])
+        ->rawColumns(['action','profile_photo'])
         ->make(true);    
     }
 
@@ -46,7 +47,7 @@ class EmployeeController extends Controller
     * @return view
     */
     public function addEmployee(){
-        return view('company.add_employee');
+        return view('employee.add_employee');
     }
 
     /**
@@ -56,9 +57,9 @@ class EmployeeController extends Controller
     public function saveEmployee(Request $request){
         $request->validate([
             'fullname' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg',
+            'email' => 'required|email|unique:App\Models\Employee,email',
+            'phone' => 'numeric|required|digits:10',
+            'profile_picture' => 'required',
             'dob'=>'required',
             'designation'=>'required'
         ]);
@@ -69,7 +70,7 @@ class EmployeeController extends Controller
         if(!File::exists($path)) {
             File::makeDirectory($path, 0777, true, true);
         }
-        $request->profile_picture->move($path, $imageName);
+        $request->profile_picture->move($path, $profilePictureName);
         $employee = new Employee();
         $employee->fullname = $request->fullname;
         $employee->email = $request->email;
@@ -77,10 +78,10 @@ class EmployeeController extends Controller
         $employee->profile_picture = $profilePictureName;
         $employee->dob = $request->dob;
         $employee->designation = $request->designation;
+        $employee->company_id = Company::where('user_id',Auth::user()->id)->first()->id;
         $employee->created_at = date('Y-m-d H:i:s');
         $employee->save();
-
-        return back()->with('success','You have added company detail successfully.');
+        return redirect('home');
     }
     
     /**
@@ -90,7 +91,7 @@ class EmployeeController extends Controller
     public function getSingleEmployee(Request $request){
         $employee_id = $request->employee_id;
         $employee = Employee::where("id",$employee_id)->first();
-        return redirect('add-employee')->with("employee",$employee);
+        return view('employee.add_employee',compact('employee'));
     }
 
     /**
@@ -100,7 +101,7 @@ class EmployeeController extends Controller
     public function editEmployee(Request $request){
         $request->validate([
             'fullname' => 'required',
-            'phone' => 'required',
+            'phone' => 'numeric|required|digits:10',
             // 'profile_picture' => 'required|image|mimes:jpeg,png,jpg',
             'dob'=>'required',
             'designation'=>'required'
@@ -121,7 +122,7 @@ class EmployeeController extends Controller
             $employee->profile_picture = $profilePictureName;
         }
         $employee->save();
-        return back()->with('success','You have updated company detail successfully.');
+        return redirect('home');
     }
 
     /**

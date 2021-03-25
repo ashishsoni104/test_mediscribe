@@ -15,13 +15,13 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">   -->
     <link  href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <!-- <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script> -->
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
 
     
 
@@ -58,22 +58,18 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                            <li class="nav-item" style="padding-top: 11px;">
+                                <strong> Hi, {{ Auth::user()->name }}</strong>&nbsp;&nbsp;&nbsp;
+                            </li>
+                            <li class="nav-item">
+                                <a  class="nav-link" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
-                                    </form>
-                                </div>
+                                </form>
                             </li>
                         @endguest
                     </ul>
